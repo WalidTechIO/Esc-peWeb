@@ -1,0 +1,64 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>370</x><y>0</y><w>210</w><h>190</h></coordinates><panel_attributes>UTILISATEUR
+--
+_idUtilisateur_
+email UNIQUE
+password
+prenom
+nom
+statut
+role</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>40</x><y>310</y><w>210</w><h>70</h></coordinates><panel_attributes>PARTICIPANT
+--
+_idParticipant_
+mailParticipant UNIQUE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>20</x><y>0</y><w>210</w><h>190</h></coordinates><panel_attributes>ACTUALITE
+--
+_idActualite_
+titre
+date
+contenu
+statut</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>700</x><y>0</y><w>210</w><h>190</h></coordinates><panel_attributes>SCENARIO
+--
+_idScenario_
+intitule
+statut
+code</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>700</x><y>400</y><w>210</w><h>190</h></coordinates><panel_attributes>ETAPE
+--
+_idEtape_
+intitule
+statut
+question
+reponse
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1030</x><y>120</y><w>210</w><h>190</h></coordinates><panel_attributes>RESSOURCE
+--
+_idRessource_
+type
+lien</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>90</y><w>170</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=0..*
+m2=1..1
+&lt; poste une </panel_attributes><additional_attributes>10;20;150;20</additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>90</y><w>150</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..*
+crée des &gt;</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>Relation</id><coordinates><x>790</x><y>180</y><w>110</w><h>240</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..*
+possède des &gt;</panel_attributes><additional_attributes>10;10;10;220</additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>450</y><w>210</w><h>190</h></coordinates><panel_attributes>PARTICIPATION
+--
+dateReussite
+dateDerniereParticipation
+difficulteMaxReussite</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>140</y><w>480</w><h>240</h></coordinates><panel_attributes>lt=-
+m1=0..*
+m2=1..*
+participe &gt;</panel_attributes><additional_attributes>460;10;420;10;420;210;10;210</additional_attributes></element><element><id>Relation</id><coordinates><x>900</x><y>530</y><w>150</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..*
+contient des &gt;</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>Relation</id><coordinates><x>900</x><y>150</y><w>150</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=0..*
+m2=1..1
+possède une &gt;</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element><element><id>Relation</id><coordinates><x>900</x><y>270</y><w>170</w><h>240</h></coordinates><panel_attributes>lt=-
+m1=0..*
+m2=1..1
+possède une &gt;</panel_attributes><additional_attributes>10;210;60;210;60;10;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>340</y><w>30</w><h>130</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1030</x><y>410</y><w>210</w><h>190</h></coordinates><panel_attributes>INDICE
+--
+_idIndice_
+texte
+lien
+niveau</panel_attributes><additional_attributes></additional_attributes></element></diagram>
