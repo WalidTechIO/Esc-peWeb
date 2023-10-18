@@ -69,6 +69,8 @@ END;
 //
 DELIMITER ;
 
+-- SQL-PSM Approfondir
+
 SELECT cpt_mail, cpt_nom, cpt_prenom, act_contenu FROM T_COMPTE_CPT LEFT JOIN T_ACTUALITE_ACT USING(cpt_id);
 
 SELECT cpt_mail, cpt_nom, cpt_prenom FROM T_COMPTE_CPT WHERE cpt_id NOT IN (SELECT cpt_id FROM T_ACTUALITE_ACT);
@@ -100,27 +102,34 @@ END;
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER scenarioCache
+CREATE TRIGGER scenarioUpdate
 BEFORE UPDATE ON T_SCENARIO_SCE
 FOR EACH ROW
 BEGIN
     DECLARE contenu TEXT;
-    IF NEW.sce_statut = 'C' THEN
+    IF NEW.sce_statut = 'C' THEN -- Crée article et renomme scenario
         CALL infoScenario(NEW.sce_id, contenu);
         INSERT INTO T_ACTUALITE_ACT (act_titre, act_date, act_contenu, act_statut, cpt_id) VALUES (CONCAT('Scénario ', NEW.sce_id, ' retiré'), CURDATE(), contenu, 'P', 1);
         SET NEW.sce_intitule := CONCAT(NEW.sce_intitule, " - Caché le ", CURDATE());
+    END IF;
+    IF NEW.sce_statut = 'P' THEN -- Evite doublons article + Renomme scenario
+        DELETE FROM T_ACTUALITE_ACT WHERE act_titre = CONCAT('Scénario ', NEW.sce_id, ' retiré');
+        SET NEW.sce_intitule := SUBSTRING_INDEX(NEW.sce_intitule, ' - Caché le', 1);
     END IF;
 END;
 //
 DELIMITER ;
 
-SELECT SUBSTRING_INDEX('Scenario PHP - Caché le 2023-10-17', ' - ', 1) AS resultat; -- Resultat : Scenario PHP
+-- En changeant le delimiter par " - Caché le" je réduis les contraintes de nommage des scenarios en BDD (Avec " - " on ne pouvait plus réellement mettre ce bout de texte dans l'intitulé)
+SELECT SUBSTRING_INDEX('Scenario PHP - Caché le 2023-10-17', ' - Caché le', 1) AS resultat; -- Resultat : Scenario PHP
 
--- Rajouter cette condition dans le trigger au dessus.
+-- Idee Trigger: trigger qui remplis code avant l'insert via SET NEW.sce_code := (UPPER(RIGHT(REPLACE(NEW.sce_intitule, ' ', ''), 8)));
+DELIMITER //
+CREATE TRIGGER scenarioInsert
+BEFORE INSERT ON T_SCENARIO_SCE
+FOR EACH ROW
 BEGIN
-IF NEW.sce_statut = 'P' THEN
-    DELETE FROM T_ACTUALITE_ACT WHERE act_titre = CONCAT('Scénario ', NEW.sce_id, ' retiré');
-    SET NEW.sce_intitule := SUBSTRING_INDEX(NEW.sce_intitule, ' - ', 1);
-END IF;
-
---Idee Trigger: trigger qui remplis code avant l'insert via SET NEW.sce_code := (UPPER(RIGHT(REPLACE(NEW.sce_intitule, ' ', ''), 8)));
+    SET NEW.sce_code := CONCAT(UPPER(RIGHT(REPLACE(NEW.sce_intitule, ' ', ''), (8 - CHAR_LENGTH(NEW.sce_id)))), RIGHT(NEW.sce_id, 8));
+END;
+//
+DELIMITER ;
