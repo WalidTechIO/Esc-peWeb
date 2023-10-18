@@ -99,9 +99,6 @@ END;
 //
 DELIMITER ;
 
-CALL infoScenario(2, @test);
-SELECT @test;
-
 DELIMITER //
 CREATE TRIGGER scenarioCache
 BEFORE UPDATE ON T_SCENARIO_SCE
@@ -116,5 +113,14 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+SELECT SUBSTRING_INDEX('Scenario PHP - Caché le 2023-10-17', ' - ', 1) AS resultat; -- Resultat : Scenario PHP
+
+-- Rajouter cette condition dans le trigger au dessus.
+BEGIN
+IF NEW.sce_statut = 'P' THEN
+    DELETE FROM T_ACTUALITE_ACT WHERE act_titre = CONCAT('Scénario ', NEW.sce_id, ' retiré');
+    SET NEW.sce_intitule := SUBSTRING_INDEX(NEW.sce_intitule, ' - ', 1);
+END IF;
 
 --Idee Trigger: trigger qui remplis code avant l'insert via SET NEW.sce_code := (UPPER(RIGHT(REPLACE(NEW.sce_intitule, ' ', ''), 8)));

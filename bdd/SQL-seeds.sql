@@ -42,7 +42,7 @@ INSERT INTO T_PARTICIPANT_PNT (pnt_mail) VALUES ('superdev@outlook.fr');
 INSERT INTO T_PARTICIPANT_PNT (pnt_mail) VALUES ('john@doe.fr');
 INSERT INTO T_PARTICIPANT_PNT (pnt_mail) VALUES ('walid@gmail.com');
 
--- Scenarios
+-- Scenariis
 INSERT INTO `e22000229_db2`.`T_SCENARIO_SCE` (`sce_intitule`, `sce_statut`, `sce_code`, `cpt_id`)
 VALUES ('Scénario PHP', 'P', UPPER(RIGHT(REPLACE('Scénario PHP', ' ', ''), 8)), 2);
 INSERT INTO `e22000229_db2`.`T_SCENARIO_SCE` (`sce_intitule`, `sce_statut`, `sce_code`, `cpt_id`)
@@ -142,13 +142,46 @@ VALUES
 -- Indices
 INSERT INTO `e22000229_db2`.`T_INDICE_IND` (`ind_texte`, `ind_lien`, `ind_niveau`, `eta_id`)
 VALUES
-("Pour afficher du texte en PHP, utilisez la fonction echo.", 'https://www.php.net/manual/en/function.echo.php', 1, 13),
-("En JavaScript, console.log() est utilisé pour afficher des messages dans la console.", 'https://developer.mozilla.org/en-US/docs/Web/API/Console/log', 1, 14),
-("Dans SQL, utilisez SELECT * FROM table pour récupérer toutes les lignes de la table.", 'https://www.w3schools.com/sql/sql_select.asp', 2, 15),
+("Pour afficher du texte en PHP, utilisez la fonction echo.", 'https://www.php.net/manual/en/function.echo.php', 1, 1),
+("En JavaScript, console.log() est utilisé pour afficher des messages dans la console.", 'https://developer.mozilla.org/en-US/docs/Web/API/Console/log', 1, 6),
+("Dans SQL, utilisez SELECT * FROM table pour récupérer toutes les lignes de la table.", 'https://www.w3schools.com/sql/sql_select.asp', 2, 11),
 ("En HTML, la balise <a> est utilisée pour créer des liens hypertexte.", 'https://www.w3schools.com/html/html_links.asp', 2, 16),
-("CSS utilise la propriété color pour définir la couleur du texte.", 'https://developer.mozilla.org/en-US/docs/Web/CSS/color', 2, 17),
-("En PHP, le signe $ est utilisé pour déclarer une variable.", 'https://www.php.net/manual/en/language.variables.basics.php', 3, 18),
-("JavaScript utilise la structure de contrôle if...else pour les conditions.", 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else', 3, 19),
-("SQL utilise le mot clé WHERE pour filtrer les résultats d'une requête.", 'https://www.w3schools.com/sql/sql_where.asp', 3, 20),
-("Les balises HTML <p> sont utilisées pour créer des paragraphes.", 'https://www.w3schools.com/html/html_paragraphs.asp', 1, 21),
-("En CSS, display: flex; permet de rendre un élément flex.", 'https://developer.mozilla.org/en-US/docs/Web/CSS/display', 1, 22);
+("CSS utilise la propriété color pour définir la couleur du texte.", 'https://developer.mozilla.org/en-US/docs/Web/CSS/color', 2, 22),
+("En PHP, le signe $ est utilisé pour déclarer une variable.", 'https://www.php.net/manual/en/language.variables.basics.php', 3, 2),
+("JavaScript utilise la structure de contrôle if...else pour les conditions.", 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else', 3, 9),
+("SQL utilise le mot clé WHERE pour filtrer les résultats d'une requête.", 'https://www.w3schools.com/sql/sql_where.asp', 3, 15),
+("Les balises HTML <p> sont utilisées pour créer des paragraphes.", 'https://www.w3schools.com/html/html_paragraphs.asp', 1, 17),
+("En CSS, display: flex; permet de rendre un élément flex.", 'https://developer.mozilla.org/en-US/docs/Web/CSS/display', 1, 23);
+
+-- MAJ Premieres Etapes + Ressource dans les Scenarii
+UPDATE T_SCENARIO_SCE SET res_id = '1', eta_id = '1' WHERE sce_id = 1;
+UPDATE T_SCENARIO_SCE SET res_id = '2', eta_id = '6' WHERE sce_id = 2;
+UPDATE T_SCENARIO_SCE SET res_id = '3', eta_id = '11' WHERE sce_id = 3;
+UPDATE T_SCENARIO_SCE SET res_id = '4', eta_id = '16' WHERE sce_id = 4;
+UPDATE T_SCENARIO_SCE SET res_id = '5', eta_id = '21' WHERE sce_id = 5;
+
+-- MAJ ordre des etapes
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 2 WHERE eta_id = 1;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 3 WHERE eta_id = 2;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 4 WHERE eta_id = 3;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 5 WHERE eta_id = 4;
+
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 7 WHERE eta_id = 6;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 8 WHERE eta_id = 7;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 9 WHERE eta_id = 8;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 10 WHERE eta_id = 9;
+
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 12 WHERE eta_id = 11;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 13 WHERE eta_id = 12;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 14 WHERE eta_id = 13;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 15 WHERE eta_id = 14;
+
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 17 WHERE eta_id = 16;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 18 WHERE eta_id = 17;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 19 WHERE eta_id = 18;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 20 WHERE eta_id = 19;
+
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 22 WHERE eta_id = 21;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 23 WHERE eta_id = 22;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 24 WHERE eta_id = 23;
+UPDATE T_ETAPE_ETA SET eta_prochaine_id = 25 WHERE eta_id = 24;
