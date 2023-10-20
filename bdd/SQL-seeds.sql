@@ -68,29 +68,29 @@ VALUES ('Image', 'documents/css.jpg');
 
 -- Participations
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (1, 1, '2023-10-16', '2023-10-15', 3);
+VALUES (1, 1, '2023-10-16 00:00:00', '2023-10-15 00:00:00', 3);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (2, 2, '2023-10-17', '2023-10-16', 2);
+VALUES (2, 2, '2023-10-17 00:00:00', '2023-10-16 00:00:00', 2);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (3, 3, '2023-10-18', '2023-10-17', 4);
+VALUES (3, 3, '2023-10-18 00:00:00', '2023-10-17 00:00:00', 4);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (4, 4, '2023-10-19', '2023-10-18', 1);
+VALUES (4, 4, '2023-10-19 00:00:00', '2023-10-18 00:00:00', 1);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (5, 5, '2023-10-20', '2023-10-19', 5);
+VALUES (5, 5, '2023-10-20 00:00:00', '2023-10-19 00:00:00', 5);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (1, 2, '2023-10-21', '2023-10-20', 2);
+VALUES (1, 2, '2023-10-21 00:00:00', '2023-10-20 00:00:00', 2);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (2, 3, '2023-10-22', '2023-10-21', 3);
+VALUES (2, 3, '2023-10-22 00:00:00', '2023-10-21 00:00:00', 3);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (3, 4, '2023-10-23', '2023-10-22', 4);
+VALUES (3, 4, '2023-10-23 00:00:00', '2023-10-22 00:00:00', 4);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (4, 5, '2023-10-24', '2023-10-23', 1);
+VALUES (4, 5, '2023-10-24 00:00:00', '2023-10-23 00:00:00', 1);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (5, 1, '2023-10-25', '2023-10-24', 5);
+VALUES (5, 1, '2023-10-25 00:00:00', '2023-10-24 00:00:00', 5);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (1, 3, '2023-10-26', '2023-10-25', 3);
+VALUES (1, 3, '2023-10-26 00:00:00', '2023-10-25 00:00:00', 3);
 INSERT INTO `e22000229_db2`.`T_PARTICIPATION_PON` (`sce_id`, `pnt_id`, `pon_date_reussite`, `pon_date_derniere_participation`, `pon_difficulte_max_reussie`)
-VALUES (2, 4, '2023-10-27', '2023-10-26', 2);
+VALUES (2, 4, '2023-10-27 00:00:00', '2023-10-26 00:00:00', 2);
 
 -- Etapes
 -- Etapes pour PHP (sce_id = 1)

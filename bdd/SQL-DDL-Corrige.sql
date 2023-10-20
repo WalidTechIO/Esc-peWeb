@@ -164,8 +164,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `e22000229_db2`.`T_PARTICIPATION_PON` (
   `pnt_id` INT NOT NULL AUTO_INCREMENT,
   `sce_id` INT NOT NULL,
-  `pon_date_reussite` DATE NOT NULL,
-  `pon_date_derniere_participation` DATE NOT NULL,
+  `pon_date_reussite` DATETIME NOT NULL,
+  `pon_date_derniere_participation` DATETIME NOT NULL,
   `pon_difficulte_max_reussie` INT NOT NULL,
   PRIMARY KEY (`pnt_id`, `sce_id`),
   INDEX `ParticipationScenarioFK2_idx` (`sce_id` ASC),
