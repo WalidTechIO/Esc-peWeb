@@ -1,0 +1,1 @@
+Contenu du fichier affichage_accueil.php !!

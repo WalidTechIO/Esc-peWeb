@@ -80,6 +80,7 @@ SELECT cpt_mail, cpt_nom, cpt_prenom FROM T_COMPTE_CPT WHERE cpt_id NOT IN (SELE
 
 -- Activite 2
 
+DROP FUNCTION IF EXISTS nbParticipants;
 DELIMITER //
 CREATE FUNCTION nbParticipants(idScenario INT) RETURNS INT
 BEGIN
@@ -90,12 +91,17 @@ END;
 //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS infoScenario;
 DELIMITER //
 CREATE PROCEDURE infoScenario(IN idScenario INT, OUT MESSAGE TEXT)
-BEGIN
+infsce: BEGIN
     DECLARE intitule, mailPart TEXT;
     DECLARE nbParts INT;
     DECLARE datePart DATETIME;
+    IF (SELECT sce_id FROM T_SCENARIO_SCE WHERE sce_id = idScenario) IS NULL THEN -- Aucun scenario d'ID `idScenario`
+        SELECT "Scénario inexistant" INTO MESSAGE;
+        LEAVE infsce; -- On quitte la procedure
+    END IF;
     SELECT nbParticipants(idScenario) INTO nbParts;
     IF nbParts = 0 THEN
         SELECT "Aucun participant" INTO mailPart;
@@ -112,6 +118,7 @@ DELIMITER ;
 
 -- Trigger activité 2 + Trigger 1 de l'activité 4
 
+DROP TRIGGER IF EXISTS scenarioUpdate;
 DELIMITER //
 CREATE TRIGGER scenarioUpdate
 BEFORE UPDATE ON T_SCENARIO_SCE
@@ -152,6 +159,7 @@ SELECT @test;
 
 -- Activite 4 Trigger 2
 
+DROP TRIGGER IF EXISTS compteDelete;
 DELIMITER //
 CREATE TRIGGER compteDelete
 BEFORE DELETE ON T_COMPTE_CPT
@@ -169,6 +177,7 @@ DELIMITER ;
 
 SELECT CONCAT(UPPER(RIGHT(REPLACE('Scénario de test', ' ', ''), (8 - CHAR_LENGTH(12)))), RIGHT(12, 8)) -- -> 'Scenario de test' ID 12, Sortie: DETEST12
 
+DROP TRIGGER IF EXISTS scenarioInsert;
 DELIMITER //
 CREATE TRIGGER scenarioInsert
 BEFORE INSERT ON T_SCENARIO_SCE
@@ -180,19 +189,12 @@ END;
 DELIMITER ;
 
 -- 2e idee trigger -> Gestion de l'ordre des etapes en cas de desac d'une etape
+DROP TRIGGER IF EXISTS etapeUpdate;
 DELIMITER //
 CREATE TRIGGER etapeUpdate
 BEFORE UPDATE ON T_ETAPE_ETA
 FOR EACH ROW
 BEGIN
-    -- Si l'etape est desac appliquer: 
-    -- Si eta_prochaine_id && id apparait dans T_SCENARIO_SCE (1e etape une seconde existe)
-    -- On met prochaine id dans T_SCENARIO_SCE 
-    -- Si eta_prochaine_id !& id apparait dans T_SCENARIO_SCE (etape quelconque qui a une suivante)
-    -- On repere là ou son ID (eta_id) est la prochaine dans les etapes (etape precedente a l'etape supr)
-    -- On remplace a cette ligne l'id de la prochaine etape par id_prochaine_etape de notre etape supr
-    -- Si !eta_prochaine_id && id apparait dans SCENARIO (1ere et derniere etape) -> On désactive le scenario
-    -- Si !eta_prochaine_id && !id apparait dans Scenario (derniere etape du sce) -> On désactive sans rien faire de plus
     DECLARE presenceScenario INT;
     IF NEW.eta_statut = 'C' THEN
         SELECT eta_id INTO presenceScenario FROM T_SCENARIO_SCE WHERE sce_id = OLD.sce_id;
@@ -201,9 +203,9 @@ BEGIN
             UPDATE T_SCENARIO_SCE SET eta_id = OLD.eta_prochaine_id WHERE sce_id = OLD.sce_id;
         END IF;
 
-        IF OLD.eta_prochaine_id IS NOT NULL AND presenceScenario != OLD.eta_id THEN
-            UPDATE T_ETAPE_ETA SET eta_prochaine_id = OLD.eta_prochaine_id WHERE eta_id = (SELECT eta_id FROM T_ETAPE_ETA WHERE eta_prochaine_id = OLD.eta_id);
-        END IF;
+        -- IF OLD.eta_prochaine_id IS NOT NULL AND presenceScenario != OLD.eta_id THEN
+        --     UPDATE T_ETAPE_ETA SET eta_prochaine_id = OLD.eta_prochaine_id WHERE eta_id = (SELECT eta_id FROM T_ETAPE_ETA WHERE eta_prochaine_id = OLD.eta_id);
+        -- END IF;
 
         IF OLD.eta_prochaine_id IS NULL AND presenceScenario = OLD.eta_id THEN
             UPDATE T_SCENARIO_SCE SET sce_statut = 'C' WHERE sce_id = OLD.sce_id;
@@ -214,7 +216,51 @@ END;
 //
 DELIMITER ;
 
--- Soulager le trigger au dessus a l'aide d'une procedure qui via l'id de l'etape renvoie si c'est la premiere / derniere, une quelconque ou le seule
--- Cela rendrait mes conditions moins longue
+-- Fonction qui a partir de l'id d'une etape nous renvoie son ordre sur le scénario associé
 
--- Fonction qui a partir de l'id d'une etape nous renvoie son ordre sur le scénario associé ?
+DROP PROCEDURE IF EXISTS orderEtape; -- Transformer en procedure pour double sortie ?
+DELIMITER //
+CREATE PROCEDURE orderEtape(IN idScenario INT, OUT MSG TEXT, OUT ETAPECOUNT INT)
+ordeEtape: BEGIN
+    DECLARE idTraite INT;
+    SELECT eta_id INTO idTraite FROM T_SCENARIO_SCE WHERE sce_id = idScenario;
+    IF idTraite IS NULL THEN
+        SELECT "Le scénario n'a aucune étape" INTO MSG;
+        SELECT 0 INTO ETAPECOUNT;
+        LEAVE ordeEtape;
+    ELSE
+        SELECT CONCAT(idTraite) INTO MSG;
+        SELECT 1 INTO ETAPECOUNT;
+    END IF;
+    WHILE idTraite IS NOT NULL DO
+        SELECT eta_prochaine_id INTO idTraite FROM T_ETAPE_ETA WHERE eta_id = idTraite;
+        IF FIND_IN_SET(idTraite, MSG) THEN
+            SELECT "Boucle infinie dans les étapes" INTO MSG;
+            SELECT 0 INTO ETAPECOUNT;
+            LEAVE ordeEtape;
+        END IF;
+        IF idTraite IS NOT NULL THEN
+            SELECT CONCAT(MSG, ",", idTraite) INTO MSG;
+            SELECT (ETAPECOUNT+1) INTO ETAPECOUNT;
+        END IF;
+    END WHILE;
+END;
+//
+DELIMITER ;
+
+-- Procedure qui a partir d'un ID d'etape peut desactiver l'etape sans que l'ordre soit cassée en BDD
+
+DROP PROCEDURE IF EXISTS turnOffStep;
+DELIMITER //
+CREATE PROCEDURE turnOffStep(IN etapeD INT)
+label: BEGIN
+    DECLARE etapeS INT;
+    IF (SELECT eta_id FROM T_ETAPE_ETA WHERE eta_id = etapeD) IS NULL THEN
+        LEAVE label; -- On quitte
+    END IF;
+    SELECT eta_prochaine_id INTO etapeS FROM T_ETAPE_ETA WHERE eta_id = etapeD;
+    UPDATE T_ETAPE_ETA SET eta_statut = 'C' WHERE eta_id = etapeD;
+    UPDATE T_ETAPE_ETA SET eta_prochaine_id = etapeS WHERE eta_id = (SELECT eta_id FROM T_ETAPE_ETA WHERE eta_prochaine_id = etapeD);
+END;
+//
+DELIMITER ;
