@@ -1,1 +1,1 @@
-Contenu du fichier affichage_accueil.php !!
+<a href="<?= url_to('actualites#listing') ?>">Listing des actualités</a>
