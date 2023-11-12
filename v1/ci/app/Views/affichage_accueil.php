@@ -1,1 +1,0 @@
-<a href="<?= url_to('actualites#listing') ?>">Listing des actualités</a>

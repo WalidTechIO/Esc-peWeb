@@ -15,11 +15,19 @@ class Actualites extends BaseController {
         }
 
         $data['actualites'] = $model->get_actualites_publiee($page);
-
         return view('templates/haut', $data) . view('listing_actualites') . view('templates/bas');
     }
 
-    public function update($id){
+    public function afficher($numero = 0){
+        $model = model(Db_model::class);
+        if($numero == 0){
+            return redirect()->to('/');
+        } else {
+            $data['titre'] = 'Actualité :';
+            $data['news'] = $model->get_actualite($numero);
+
+            return view('templates/haut', $data) . view('affichage_actualite') . view('templates/bas');
+        }
     }
 
 }

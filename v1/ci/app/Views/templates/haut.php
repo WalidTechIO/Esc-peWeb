@@ -50,3 +50,4 @@
 					</section>
 
                     <div id="banner" style="padding-top: 0rem;">
+						<div class="inner">
