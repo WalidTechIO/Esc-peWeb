@@ -3,15 +3,18 @@
 namespace App\Controllers;
 
 use App\Models\Db_model;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class Actualites extends BaseController {
 
     public function listing($page = 1){
 
+        if(!$page) $page = 1;
+
         $model = model(Db_model::class);
 
         if($page > ceil($model->count_actualites_publiee()/10)){
-            return view('errors/html/error_404', ['message' => 'Cette page n\'existe pas !']);
+            throw new PageNotFoundException("Cette page n'existe pas !");
         }
 
         $data['actualites'] = $model->get_actualites_publiee($page);

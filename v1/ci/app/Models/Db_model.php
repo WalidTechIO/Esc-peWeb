@@ -27,7 +27,7 @@ class Db_model extends Model {
      * @return int Nb total d'actualités publiées
      */
     public function count_actualites_publiee(){
-        $resultat = $this->db->query("SELECT COUNT(*) AS total FROM T_ACTUALITE_ACT WHERE act_statut = 'P';")->getResultArray()[0]['total'];
+        $resultat = $this->db->query("SELECT COUNT(*) AS total FROM T_ACTUALITE_ACT WHERE act_statut = 'P';")->getRow()->total;
         return intval($resultat);
     }
 
@@ -48,7 +48,7 @@ class Db_model extends Model {
      * @return Actualite|null actualité trouvé ou NULL
      */
     public function get_actualite($id){
-        return $this->db->query("SELECT * FROM T_ACTUALITE_ACT WHERE act_id = $id")->getRow();
+        return $this->db->query("SELECT * FROM T_ACTUALITE_ACT WHERE act_id = $id")->getRowArray();
     }
 
     public function get_all_compte(){
@@ -60,21 +60,14 @@ class Db_model extends Model {
     }
 
     public function get_scenarii(){
-        $results = $this->db->query("SELECT * FROM T_SCENARIO_SCE LEFT JOIN T_RESSOURCE_RES USING(res_id) WHERE sce_statut = 'P';")->getResultArray();
+        $results = $this->db->query("SELECT * FROM T_SCENARIO_SCE JOIN T_COMPTE_CPT USING(cpt_id) LEFT JOIN T_RESSOURCE_RES USING(res_id) WHERE sce_statut = 'P';")->getResultArray();
         return $results;
     }
 
     public function get_first_step($code, $niveau) {
-        $result = $this->db->query("SELECT * FROM T_ETAPE_ETA WHERE eta_id = (SELECT eta_id FROM T_SCENARIO_SCE WHERE sce_code = '$code') AND eta_statut = 'P';")->getResultArray();
-        if($result){
-            $result = $result[0];
-            $etaid = $result['eta_id'];
-            $resid = $result['res_id'];
-            $result['indice'] = $this->db->query("SELECT * FROM T_INDICE_IND WHERE eta_id = '$etaid' AND ind_niveau = $niveau;")->getResultArray()[0] ?? null;
-            $result['ressource'] = $this->db->query("SELECT * FROM T_RESSOURCE_RES WHERE res_id = $resid;")->getResultArray()[0] ?? null;
-            return $result;
-        }
-        return null;
+        $result = $this->db->query("SELECT * FROM T_ETAPE_ETA LEFT JOIN T_RESSOURCE_RES USING(res_id) WHERE eta_id = (SELECT eta_id FROM T_SCENARIO_SCE WHERE sce_code = '$code') AND eta_statut = 'P'")->getRowArray();
+        $result['indice'] = $this->db->query("SELECT * FROM T_INDICE_IND WHERE eta_id = " . $result['eta_id'] . " AND ind_niveau = $niveau")->getRowArray();
+        return $result;
     }
 
 }

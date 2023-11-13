@@ -5,6 +5,7 @@ use App\Controllers\Accueil;
 use App\Controllers\Actualites;
 use App\Controllers\Compte;
 use App\Controllers\Scenario;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 /**
  * @var RouteCollection $routes
@@ -18,5 +19,9 @@ $routes->get('actualites/afficher/(:num)', [Actualites::class, 'afficher'], ['as
 $routes->get('compte/lister', [Compte::class , 'lister']);
 
 $routes->get('scenarii', [Scenario::class, 'afficher_scenarii'], ['as' => 'scenarii#afficher']);
-$routes->get('scenarii/(:segment)', [Scenario::class, 'premiere_etape']);
-$routes->get('scenarii/(:segment)/(:num)', [Scenario::class, 'premiere_etape'], ['as' => 'scenarii#premiere_etape']);
+$routes->get('scenario/([a-zA-Z0-9-_]+)', [Scenario::class, 'premiere_etape']);
+$routes->get('scenario/([a-zA-Z0-9-_]+)/([1-3])', [Scenario::class, 'premiere_etape'], ['as' => 'scenario#premiere_etape']);
+
+$routes->set404Override(function($message = null) {
+    throw new PageNotFoundException("Cette page n'existe pas !");
+});
