@@ -7,9 +7,10 @@
                 <h3><?= $scenario["sce_intitule"] ?></h3>
                 <h4>Par <?= $scenario["cpt_pseudo"] ?></h4>
                 <p>Niveau</p>
-                <ul style="list-style-type: none; display: flex; flex-direction: row; justify-content: space-around; width: 60%; padding-left: 0;">
+                <ul style="list-style-type: none; display: flex; flex-direction: row; justify-content: space-around; padding-left: 0; width: 100%">
+                <?php $levelname = ["Facile", "Moyen", "Difficile"]; ?>
                     <?php for($i = 1; $i < 3+1; $i++): ?>
-                        <li style="padding: 0;"><a href="<?= url_to("scenario#premiere_etape", $scenario["sce_code"], $i) ?>"><?= $i ?></a></li>
+                        <li style="padding: 0;"><a href="<?= url_to("scenario#premiere_etape", $scenario["sce_code"], $i) ?>"><?= $levelname[$i-1] ?></a></li>
                     <?php endfor; ?>
                 </ul>
             </div>

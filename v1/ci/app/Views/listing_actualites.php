@@ -1,6 +1,5 @@
 <table>
     <thead>
-        <th>ID</th>
         <th>Intitule</th>
         <th>Date</th>
         <th>Actions</th>
@@ -9,7 +8,6 @@
     <tbody>
         <?php foreach($actualites as $actualite): ?>
         <tr>
-            <td><?= $actualite['act_id'] ?></td>
             <td><?= $actualite['act_titre'] ?></td>
             <td><?= $actualite['act_date'] ?></td>
             <td><a href="<?= url_to('actualite#afficher', $actualite['act_id']) ?>">Lire</a></td>

@@ -19,7 +19,7 @@
 
 				<!-- Header -->
 					<header id="header" class="alt">
-						<h1><a href="index.html">Esca@pe Web</a></h1>
+						<h1><a href="<?= base_url() ?>">Esca@pe Web</a></h1>
 						<nav>
 							<a href="#menu">Menu</a>
 						</nav>
@@ -32,7 +32,7 @@
 					<section id="banner">
 						<div class="inner">
 							<div class="logo"><span class="icon fa-gem"></span></div>
-							<h2>Esc@pe Web</h2>
+							<h2><a href="<?= base_url() ?>">Esc@pe Web</a></h2>
 							<p>Application de <em>jeux sérieux</em> !</p>
 						</div>
 					</section>

@@ -7,7 +7,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 
 class Actualites extends BaseController {
 
-    public function listing($page = 1){
+    public function lister($page = 1){
 
         if(!$page) $page = 1;
 
