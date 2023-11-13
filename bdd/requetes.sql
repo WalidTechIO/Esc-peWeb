@@ -1,0 +1,27 @@
+-- Actualité:
+
+SELECT * FROM T_ACTUALITE_ACT JOIN T_COMPTE_CPT USING(cpt_id);
+SELECT * FROM T_ACTUALITE_ACT WHERE act_id = id;
+SELECT * FROM T_ACTUALITE_ACT ORDER BY act_date DESC LIMIT 5;
+SELECT * FROM T_ACTUALITE_ACT WHERE act_contenu LIKE "expr";
+SELECT * FROM T_ACTUALITE_ACT JOIN T_COMPTE_CPT USING(cpt_id) WHERE act_date = date;
+
+-- Compte
+SELECT COUNT(*) FROM T_COMPTE_CPT;
+SELECT COUNT(*) FROM T_COMPTE_CPT WHERE cpt_role = 'O';
+SELECT COUNT(*) FROM T_COMPTE_CPT WHERE cpt_role = 'A';
+SELECT COUNT(*) FROM T_COMPTE_CPT WHERE cpt_statut = 'D';
+SELECT * FROM T_COMPTE_CPT;
+SELECT * FROM T_COMPTE_CPT WHERE cpt_pseudo = "pseudo" AND cpt_password = "mdp+hash/sel";
+SELECT * FROM T_COMPTE_CPT WHERE cpt_id = id;
+SELECT cpt_pseudo, cpt_statut FROM T_COMPTE_CPT;
+UPDATE T_COMPTE_CPT SET col = val WHERE cpt_id = id;
+
+-- Scenario
+SELECT * FROM T_SCENARIO_SCE WHERE sce_id = id;
+SELECT * FROM T_ETAPE_ETA JOIN T_RESSOURCE_RES USING(res_id) JOIN T_INDICE_IND USING(eta_id) WHERE T_ETAPE_ETA.eta_id = (SELECT eta_id FROM T_SCENARIO_SCE WHERE sce_id = id) AND T_INDICE_IND.ind_niveau = niveau;
+SELECT * FROM T_SCENARIO_SCE WHERE sce_id = id;
+SELECT * FROM T_ETAPE_ETA WHERE eta_id = (SELECT eta_id FROM T_SCENARIO_SCE WHERE sce_id = id);
+SELECT * FROM T_ETAPE_ETA WHERE eta_id = (SELECT eta_prochaine_id FROM T_ETAPE_ETA WHERE eta_id = resaudessus);
+-- Boucler sur la req precedente jusqua NULL
+SELECT COUNT(*) FROM T_ETAPE_ETA WHERE sce_id = id;

@@ -14,4 +14,10 @@ class Scenario extends BaseController {
         return view('templates/haut', $data) . view('affichage_scenarii') . view('templates/bas');
     }
 
+    public function premiere_etape($code, $niveau = 0) {
+        $model = model(Db_model::class);
+
+        dd($model->get_first_step($code, $niveau));
+    }
+
 }

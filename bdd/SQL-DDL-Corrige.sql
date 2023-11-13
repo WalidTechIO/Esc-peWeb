@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `e22000229_db2`.`T_ETAPE_ETA` (
   `eta_id` INT NOT NULL AUTO_INCREMENT,
   `eta_intitule` VARCHAR(255) NOT NULL,
   `eta_statut` CHAR(1) NOT NULL,
+  `eta_code` CHAR(8) NOT NULL,
   `eta_question` VARCHAR(255) NOT NULL,
   `eta_reponse` VARCHAR(45) NOT NULL,
   `res_id` INT NOT NULL,

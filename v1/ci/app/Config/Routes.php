@@ -9,7 +9,6 @@ use App\Controllers\Scenario;
 /**
  * @var RouteCollection $routes
  */
-//$routes->get('/', 'Home::index');
 
 $routes->get('/', [Actualites::class, 'listing']);
 $routes->get('actualites', [Actualites::class, 'listing'], ['as' => 'actualites#listing']); 
@@ -19,3 +18,5 @@ $routes->get('actualites/afficher/(:num)', [Actualites::class, 'afficher'], ['as
 $routes->get('compte/lister', [Compte::class , 'lister']);
 
 $routes->get('scenarii', [Scenario::class, 'afficher_scenarii'], ['as' => 'scenarii#afficher']);
+$routes->get('scenarii/(:segment)', [Scenario::class, 'premiere_etape']);
+$routes->get('scenarii/(:segment)/(:num)', [Scenario::class, 'premiere_etape'], ['as' => 'scenarii#premiere_etape']);
