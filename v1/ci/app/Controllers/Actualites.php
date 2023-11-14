@@ -12,8 +12,8 @@ class Actualites extends BaseController {
         if(!$page) $page = 1;
 
         $model = model(Db_model::class);
-
-        if($page > ceil($model->count_actualites_publiee()/10)){
+        $data['pages'] = ['max' => ceil($model->count_actualites_publiee()/10), "current" => $page];
+        if($page > $data['pages']['max']){
             throw new PageNotFoundException("Cette page n'existe pas !");
         }
 
@@ -26,7 +26,6 @@ class Actualites extends BaseController {
         if($numero == 0){
             return redirect()->to('/');
         } else {
-            $data['titre'] = 'Actualité :';
             $data['news'] = $model->get_actualite($numero);
 
             return view('templates/haut', $data) . view('affichage_actualite') . view('templates/bas');

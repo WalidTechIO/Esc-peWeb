@@ -6,7 +6,7 @@
                 <img style="margin-top: 2vh; margin-bottom: 2vh;" height="100px;" src="<?= base_url() . $scenario['res_chemin'] ?>" alt="Image scenario"/>
                 <h3><?= $scenario["sce_intitule"] ?></h3>
                 <h4>Par <?= $scenario["cpt_pseudo"] ?></h4>
-                <p>Niveau</p>
+                <p style="margin-bottom: 0; margin-top: 2em;">Niveau</p>
                 <ul style="list-style-type: none; display: flex; flex-direction: row; justify-content: space-around; padding-left: 0; width: 100%">
                 <?php $levelname = ["Facile", "Moyen", "Difficile"]; ?>
                     <?php for($i = 1; $i < 3+1; $i++): ?>

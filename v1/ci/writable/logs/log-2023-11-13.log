@@ -257,3 +257,24 @@ in APPPATH/Views/affichage_etape.php on line 6.
  7 SYSTEMPATH/CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController()
  8 SYSTEMPATH/CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest()
  9 FCPATH/index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-13 14:15:01 --> Undefined variable: actualite
+in APPPATH/Views/affichage_actualite.php on line 4.
+ 1 APPPATH/Views/affichage_actualite.php(4): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(228): include('/home/2023DIFAL3/e22000229/public_html/v1/ci/app/Views/affichage_actualite.php')
+ 3 SYSTEMPATH/View/View.php(231): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1190): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/Actualites.php(32): view()
+ 6 SYSTEMPATH/CodeIgniter.php(942): App\Controllers\Actualites->afficher()
+ 7 SYSTEMPATH/CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest()
+ 9 FCPATH/index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-13 14:16:07 --> Object of class DateTime could not be converted to string
+in APPPATH/Views/affichage_actualite.php on line 6.
+ 1 SYSTEMPATH/View/View.php(228): include()
+ 2 SYSTEMPATH/View/View.php(231): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH/Common.php(1190): CodeIgniter\View\View->render()
+ 4 APPPATH/Controllers/Actualites.php(32): view()
+ 5 SYSTEMPATH/CodeIgniter.php(942): App\Controllers\Actualites->afficher()
+ 6 SYSTEMPATH/CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController()
+ 7 SYSTEMPATH/CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest()
+ 8 FCPATH/index.php(79): CodeIgniter\CodeIgniter->run()

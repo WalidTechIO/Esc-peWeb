@@ -11,6 +11,7 @@ class Db_model extends Model {
     
     public function __construct() {
         $this->db = db_connect();
+        $this->salt = "SelPOUrMd5d5e6pass_";
     }
 
     /**
@@ -19,7 +20,7 @@ class Db_model extends Model {
      */
     public function get_actualites_publiee($page){
         $offset = ($page-1) * 10;
-        $resultat = $this->db->query("SELECT * FROM T_ACTUALITE_ACT WHERE act_statut = 'P' ORDER BY act_date DESC LIMIT 10 OFFSET $offset;");
+        $resultat = $this->db->query("SELECT * FROM T_ACTUALITE_ACT JOIN T_COMPTE_CPT USING(cpt_id) WHERE act_statut = 'P' ORDER BY act_date DESC LIMIT 10 OFFSET $offset;");
         return $resultat->getResultArray();
     }
 
@@ -48,7 +49,7 @@ class Db_model extends Model {
      * @return Actualite|null actualité trouvé ou NULL
      */
     public function get_actualite($id){
-        return $this->db->query("SELECT * FROM T_ACTUALITE_ACT WHERE act_id = $id")->getRowArray();
+        return $this->db->query("SELECT * FROM T_ACTUALITE_ACT JOIN T_COMPTE_CPT USING(cpt_id) WHERE act_id = $id")->getRowArray();
     }
 
     public function get_all_compte(){
@@ -57,6 +58,19 @@ class Db_model extends Model {
 
     public function count_compte(){
         return intval($this->db->query("SELECT COUNT(*) AS total FROM T_COMPTE_CPT;")->getRow()->total);
+    }
+
+    public function set_compte($data){
+        if(isset($data['pseudo']) && isset($data['mdp']) && isset($data['statut']) && isset($data['role']) && isset($data['email'])){
+            $data['mdp'] = hash('sha256', $this->salt.$data['mdp']);
+            if($data['statut'] != 'A' && $data['statut'] != 'D'){
+                $data['statut'] = 'D';
+            }
+            if($data['role'] != 'A' && $data['role'] != 'O'){
+                $data['role'] = 'O';
+            }
+            $this->db->query("INSERT INTO T_COMPTE_CPT (cpt_pseudo, cpt_mail, cpt_password, cpt_statut, cpt_role) VALUES (\"" . $data['pseudo'] . "\", \"" . $data['email'] . "\", \"" . $data['mdp'] . "\", \"" . $data['statut'] . "\", \"" . $data['role'] . "\");");
+        }
     }
 
     public function get_scenarii(){
