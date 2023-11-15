@@ -1,4 +1,4 @@
 **/debugbar/*.json
-.log
+**/writable/logs/*.log
 **/writable/**/*.json
 **/writable/**/ci_session*
