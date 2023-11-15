@@ -1,3 +1,4 @@
-/v1.1/ci/writable/**
-/v1_0/ci/writable/**
-/v1_1/ci/writable/**
+**/debugbar/*.json
+.log
+**/writable/**/*.json
+**/writable/**/ci_session*

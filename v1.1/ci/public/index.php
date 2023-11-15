@@ -75,7 +75,6 @@ $app->setContext($context);
  * Now that everything is set up, it's time to actually fire
  * up the engines and make this app do its thang.
  */
-
 $app->run();
 
 // Save Config Cache
