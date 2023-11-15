@@ -4,6 +4,7 @@
 		<ul class="links">
 			<li><a href="<?= base_url() ?>">Acceuil</a></li>
 			<li><a href="<?= url_to("scenarii#afficher") ?>">Jouer</a></li>
+			<li><a href="<?= url_to("compte#lister") ?>">Comptes</a></li>
 			<li><a href="#">Se connecter</a></li>
 		</ul>
 		<a href="#" class="close">Fermer</a>
