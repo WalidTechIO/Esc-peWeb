@@ -73,8 +73,7 @@ class Db_model extends Model {
     }
 
     public function get_first_step($code, $niveau) {
-        $result = $this->db->query("SELECT * FROM T_ETAPE_ETA LEFT JOIN T_RESSOURCE_RES USING(res_id) WHERE eta_id = (SELECT eta_id FROM T_SCENARIO_SCE WHERE sce_code = '$code') AND eta_statut = 'P'")->getRowArray();
-        $result['indice'] = $this->db->query("SELECT * FROM T_INDICE_IND WHERE eta_id = " . $result['eta_id'] . " AND ind_niveau = $niveau")->getRowArray();
+        $result = $this->db->query("SELECT * FROM T_SCENARIO_SCE AS sce LEFT JOIN T_ETAPE_ETA AS eta ON eta.sce_id=sce.sce_id AND eta.eta_id=sce.eta_id LEFT JOIN T_INDICE_IND AS ind ON ind.eta_id=eta.eta_id AND ind_niveau=$niveau WHERE sce_code='$code';")->getRowArray();
         return $result;
     }
 
