@@ -1,7 +1,17 @@
+<h3><?= $title ?></h3>
+
 <?= session()->getFlashdata('error') ?>
 
 <?= form_open(url_to("compte#creer")) ?>
     <?= csrf_field() ?>
+
+    <label for="prenom">Prénom : </label>
+    <input type="text" name="prenom">
+    <?= validation_show_error('prenom') ?>
+
+    <label for="nom">Nom : </label>
+    <input type="text" name="nom">
+    <?= validation_show_error('nom') ?>
 
     <label for="pseudo">Pseudo : </label>
     <input type="text" name="pseudo">

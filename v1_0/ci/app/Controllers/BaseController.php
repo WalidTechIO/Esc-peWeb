@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Db_model;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -52,7 +53,11 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         // Preload any models, libraries, etc, here.
-
+        $this->model = model(Db_model::class);
         // E.g.: $this->session = \Config\Services::session();
+    }
+
+    public function render($path, $data = []){
+        return view('templates/haut', $data) . view('templates/menu') . view($path) . view('templates/bas');
     }
 }
