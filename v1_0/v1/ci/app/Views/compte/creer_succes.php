@@ -1,0 +1,1 @@
+<h1>Compte <?= $pseudo ?> créé avec succès ! </h1>
