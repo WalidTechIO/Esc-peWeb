@@ -10,7 +10,7 @@ class Actualites extends BaseController {
         if(!$page) $page = 1;
 
         $data['pages'] = ['max' => ceil($this->model->count_actualites_publiee()/10), "current" => $page];
-        if($page > $data['pages']['max']){
+        if($page != 1 && $page > $data['pages']['max']){
             throw new PageNotFoundException("Cette page n'existe pas !");
         }
 

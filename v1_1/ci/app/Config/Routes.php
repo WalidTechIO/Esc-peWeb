@@ -21,7 +21,8 @@ $routes->get('actualites/afficher/(:num)', [Actualites::class, 'afficher'], ['as
 $routes->get('compte/lister', [Compte::class , 'lister'], ['as' => 'compte#lister']);
 $routes->match(["get", "post"], 'compte/creer', [Compte::class, 'creer'], ['as' => 'compte#creer']);
 $routes->match(["get", "post"], 'compte/connecter', [Compte::class, 'connecter'], ['as' => 'compte#connecter']);
-$routes->get('compte/afficher_profil', [Compte::class, 'afficher_profil'], ['as' => 'compte#profil']);
+$routes->match(["get", "post"], 'compte/profil', [Compte::class, 'profil'], ['as' => 'compte#profil']);
+$routes->get('compte/afficher_profil', [Compte::class, 'afficher_profil'], ['as' => 'compte#afficher_profil']);
 $routes->get('compte/deconnecter', [Compte::class, 'deconnecter'], ['as' => 'compte#deconnecter']);
 
 $routes->get('scenario/afficher', [Scenario::class, 'afficher_scenarii'], ['as' => 'scenarii#afficher']);

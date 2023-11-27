@@ -79,8 +79,7 @@ class Compte extends BaseController {
             $data['comptes'] = $this->model->get_all_compte();
             return $this->render('compte/affichage_comptes', $data);
         }
-        throw new  PageNotFoundException("Cette page n'existe pas !");
-        
+        return redirect()->to('/');
     }
 
     public function connecter(){
@@ -112,7 +111,7 @@ class Compte extends BaseController {
                 ]);
                 return $this->render("compte/acceuil");
             } else {
-                session()->setFlashdata('error', 'Vos identifiants sont incorrects ou votre compte est désativé !');
+                session()->setFlashdata('error', 'Vos identifiants sont incorrects ou votre compte est désactivé !');
                 return redirect()->to(url_to('compte#connecter'));
             }
         }
@@ -129,9 +128,61 @@ class Compte extends BaseController {
         return redirect()->to(url_to("compte#connecter"));
     }
 
-    public function afficher_profil(){
+    public function profil(){
+        $data['title'] = "Mon profil";
         if(session()->has('user')){
             $data['compte'] = $this->model->get_compte(session()->get('user')['pseudo']);
+            if($this->request->getMethod() == "post"){
+                if(!$this->validate([
+                    'mdp_conf' => 'matches[mdp]',
+                    'mail' => 'required|valid_email',
+                    'prenom' => 'required|min_length[2]|alpha_space',
+                    'nom' => 'required|min_length[2]|alpha_space',
+                    'mdp_last' => 'required|max_length[255]|min_length[8]'
+                ],
+                [
+                    'mdp_last' => [
+                        'required' => 'Veuillez entrer votre ancien mot de passe !',
+                        'min_length' => 'Votre ancien mot de passe doit contenir 8 caractères au minimum !'
+                    ],
+                    'nom' => [
+                        'required' => 'Veuillez renseigner un nom'
+                    ],
+                    'prenom' => [
+                        'required' => 'Veuillez renseigner un prénom'
+                    ],
+                    'mail' => [
+                        'required' => 'Veuillez renseigner un email',
+                        'valid_email' => '  Veuillez renseigner un email valide !'
+                    ],
+                    'mdp_conf' => [
+                        'matches' => 'Le nouveau mot de passe et sa confirmation ne correspondent pas !'
+                    ]
+                ])){
+                    return $this->render("compte/profil", $data);
+                }
+                $formData = $this->validator->getValidated();
+                $formData['pseudo'] = session()->get('user')['pseudo'];
+                if($this->model->connect_compte($formData['pseudo'], $formData['mdp_last'])){
+                    if($formData['mdp_conf'] == ""){
+                        $formData['mdp_conf'] = $formData['mdp_last'];
+                    }
+                    if(strlen($formData['mdp_conf']) < 8){
+                        $formData['mdp_conf'] = $formData['mdp_last'];
+                        session()->setFlashdata('error', "Votre mot de passe n'a pas été modifié ! (trop court)");
+                    }
+                    if($this->model->update_compte($formData) == true){
+                        session()->setFlashdata('success', "Votre profil a bien été modifié !");
+                        return redirect()->to(url_to('compte#profil'));
+                    } else {
+                        session()->setFlashdata('error', "Votre profil n'a pas pu être modifié !");
+                        return redirect()->to(url_to('compte#profil'));
+                    }
+                } else {
+                    session()->setFlashdata('error', "Votre mot de passe actuel est incorrect !");
+                    return redirect()->to(url_to('compte#profil'));
+                }
+            }
             return $this->render('compte/profil', $data);
         } else {
             session()->setFlashdata('error', "Vous n'êtes pas connecté !");

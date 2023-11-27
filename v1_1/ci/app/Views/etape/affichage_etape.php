@@ -1,3 +1,4 @@
+<?php if($etape['eta_question']): ?>
 <p>
     <?= $etape['eta_question'] ?>
     <br>
@@ -10,3 +11,6 @@
 <div style="display: flex; flex-direction: column; align-items: center;">
     <input style="width: 50%" type="submit" value="Soumettre la réponse">
 </div>
+<?php else: ?>
+    <h1>Aucune étape associée pour le moment</h1>
+<?php endif; ?>

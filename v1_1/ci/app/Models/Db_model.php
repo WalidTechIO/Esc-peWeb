@@ -111,7 +111,7 @@ class Db_model extends Model {
      * @return Array Les infos du scénario de sa première étape et de l'indice associé si existant
      */
     public function get_first_step($code, $niveau) {
-        $result = $this->db->query("SELECT * FROM T_SCENARIO_SCE AS sce LEFT JOIN T_ETAPE_ETA AS eta ON eta.sce_id=sce.sce_id AND eta.eta_id=sce.eta_id LEFT JOIN T_INDICE_IND AS ind ON ind.eta_id=eta.eta_id AND ind_niveau=$niveau WHERE sce_code='$code';")->getRowArray();
+        $result = $this->db->query("SELECT * FROM T_SCENARIO_SCE AS sce LEFT JOIN T_ETAPE_ETA AS eta ON eta.sce_id=sce.sce_id AND eta.eta_id=sce.eta_id LEFT JOIN T_INDICE_IND AS ind ON ind.eta_id=eta.eta_id AND ind_niveau=$niveau WHERE sce_code='$code' AND sce_statut='P';")->getRowArray();
         return $result;
     }
 
@@ -123,6 +123,15 @@ class Db_model extends Model {
     public function connect_compte($pseudo, $password) {
         $password = hash('sha256', $this->salt.$password);
         return $this->db->query("SELECT * FROM T_COMPTE_CPT WHERE cpt_pseudo = \"" . $pseudo . "\" AND cpt_password = \"" . $password . "\" AND cpt_statut = 'A';")->getNumRows() == 1;
+    }
+
+    public function update_compte($data){
+        $password = hash('sha256', $this->salt.$data['mdp_conf']);
+        $pseudo = $data['pseudo'];
+        $mail = $data['mail'];
+        $prenom = $data['prenom'];
+        $nom = $data['nom'];
+        return $this->db->query("UPDATE T_COMPTE_CPT SET cpt_nom = \"".$nom. "\", cpt_prenom = \"".$prenom. "\", cpt_mail = '$mail', cpt_password = '$password' WHERE cpt_pseudo = \"$pseudo\"");
     }
 
 }
