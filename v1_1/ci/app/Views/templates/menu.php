@@ -21,7 +21,7 @@
 				<li><a href="<?= url_to("compte#connecter") ?>">Se connecter</a></li>
 			<?php else: ?> 
 				<!-- Item connecté -->
-				<li><a href="<?= url_to("compte#profil") ?>">Mon profil</a></li>
+				<li><a href="<?= url_to("compte#afficher_profil") ?>">Mon profil</a></li>
 				<li><a href="<?= url_to("compte#deconnecter") ?>">Se déconnecter</a></li>
 			<?php endif; ?>
 		</ul>

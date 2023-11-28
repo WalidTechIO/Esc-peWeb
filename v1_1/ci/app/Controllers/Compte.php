@@ -128,8 +128,19 @@ class Compte extends BaseController {
         return redirect()->to(url_to("compte#connecter"));
     }
 
-    public function profil(){
+    public function afficher_profil(){
         $data['title'] = "Mon profil";
+        if(session()->has('user')){            
+            $data['user'] = $this->model->get_compte(session()->get('user')['pseudo']);
+            return $this->render("compte/afficher_profil", $data);
+        } else {
+            session()->setFlashdata('error', "Vous n'êtes pas connecté !");
+            return redirect()->to(url_to('compte#connecter'));
+        }
+    }
+
+    public function profil(){
+        $data['title'] = "Modifier mon profil";
         if(session()->has('user')){
             $data['compte'] = $this->model->get_compte(session()->get('user')['pseudo']);
             if($this->request->getMethod() == "post"){
