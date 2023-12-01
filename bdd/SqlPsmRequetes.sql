@@ -218,7 +218,7 @@ DELIMITER ;
 
 -- Fonction qui a partir de l'id d'une etape nous renvoie son ordre sur le scénario associé
 
-DROP PROCEDURE IF EXISTS orderEtape; -- Transformer en procedure pour double sortie ?
+DROP PROCEDURE IF EXISTS orderEtape;
 DELIMITER //
 CREATE PROCEDURE orderEtape(IN idScenario INT, OUT MSG TEXT, OUT ETAPECOUNT INT)
 ordeEtape: BEGIN
@@ -261,6 +261,41 @@ label: BEGIN
     SELECT eta_prochaine_id INTO etapeS FROM T_ETAPE_ETA WHERE eta_id = etapeD;
     UPDATE T_ETAPE_ETA SET eta_statut = 'C' WHERE eta_id = etapeD;
     UPDATE T_ETAPE_ETA SET eta_prochaine_id = etapeS WHERE eta_id = (SELECT eta_id FROM T_ETAPE_ETA WHERE eta_prochaine_id = etapeD);
+END;
+//
+DELIMITER ;
+
+-- Projet
+
+DROP FUNCTION IF EXISTS nbEtapeSce;
+DELIMITER //
+CREATE FUNCTION nbEtapeSce(idScenario INT) RETURNS INT
+ordeEtape: BEGIN
+    DECLARE idTraite INT;
+    DECLARE MSG TEXT;
+    DECLARE ETAPECOUNT INT;
+    SELECT eta_id INTO idTraite FROM T_SCENARIO_SCE WHERE sce_id = idScenario;
+    IF idTraite IS NULL THEN
+        SELECT "Le scénario n'a aucune étape" INTO MSG;
+        SELECT 0 INTO ETAPECOUNT;
+        RETURN ETAPECOUNT;
+    ELSE
+        SELECT CONCAT(idTraite) INTO MSG;
+        SELECT 1 INTO ETAPECOUNT;
+    END IF;
+    WHILE idTraite IS NOT NULL DO
+        SELECT eta_prochaine_id INTO idTraite FROM T_ETAPE_ETA WHERE eta_id = idTraite;
+        IF FIND_IN_SET(idTraite, MSG) THEN
+            SELECT "Boucle infinie dans les étapes" INTO MSG;
+            SELECT 0 INTO ETAPECOUNT;
+            RETURN ETAPECOUNT;
+        END IF;
+        IF idTraite IS NOT NULL THEN
+            SELECT CONCAT(MSG, ",", idTraite) INTO MSG;
+            SELECT (ETAPECOUNT+1) INTO ETAPECOUNT;
+        END IF;
+    END WHILE;
+    RETURN ETAPECOUNT;
 END;
 //
 DELIMITER ;
