@@ -22,7 +22,7 @@ class Scenario extends BaseController {
         }
         $data['action'] = url_to('scenario#premiere_etape', $data['etape']['sce_code'], $niveau);
         $data['niveau'] = $niveau;
-        $data['etape']['prochain_code'] = $this->model->get_code_next_etape($data['etape']['eta_prochaine_id']);
+        if($data['etape']['eta_question']) $data['etape']['prochain_code'] = $this->model->get_code_next_etape($data['etape']['eta_prochaine_id']);
         if($this->request->getMethod() == "get"){
             return $this->render('etape/affichage_etape', $data);
         }

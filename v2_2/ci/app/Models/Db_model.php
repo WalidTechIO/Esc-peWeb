@@ -173,7 +173,7 @@ class Db_model extends Model {
         //Creer res -> Recup id res -> Insert scenario | -> Procedure SQL ?
         $this->db->query("INSERT INTO T_RESSOURCE_RES (res_type, res_chemin) VALUES ('Image', 'images/$filename')");
         $resid = $this->db->query("SELECT res_id FROM T_RESSOURCE_RES WHERE res_chemin = \"images/$filename\"")->getRowArray()['res_id'];
-        $this->db->query("INSERT INTO T_SCENARIO_SCE (sce_intitule, sce_statut, sce_code, cpt_id, res_id) VALUES (\"$intitule\", \"$statut\", \"tmp\", $uid, $resid);");
+        $this->db->query("INSERT INTO T_SCENARIO_SCE (sce_intitule, sce_statut, cpt_id, res_id) VALUES (\"$intitule\", \"$statut\", $uid, $resid);");
     }
 
     /**
@@ -182,11 +182,7 @@ class Db_model extends Model {
      */
     public function delete_scenario($id){
         //2e procedure ?
-        $this->db->query("DELETE FROM T_PARTICIPATION_PON WHERE sce_id = $id;");
-        $this->db->query("UPDATE T_SCENARIO_SCE SET eta_id = NULL WHERE sce_id = $id;");
-        $this->db->query("DELETE FROM T_INDICE_IND WHERE eta_id IN (SELECT eta_id FROM T_ETAPE_ETA WHERE sce_id = $id);");
-        $this->db->query("DELETE FROM T_ETAPE_ETA WHERE sce_id = $id;");
-        $this->db->query("DELETE FROM T_SCENARIO_SCE WHERE sce_id = $id;");
+        $this->db->query("CALL suppressionScenario($id)");
     }
 
     /**
