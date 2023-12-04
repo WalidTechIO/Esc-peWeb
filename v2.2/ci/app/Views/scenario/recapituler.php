@@ -23,12 +23,13 @@
             <td><?= $scenario['nb_etapes'] ?></td>
             <td><?= $scenario['cpt_pseudo'] ?></td>
             <td>
-                <a href="<?= url_to('scenario#detail', $scenario['sce_code']) ?>"><img width="18em" src="<?= base_url() . "images/see.svg" ?>" alt="Visualiser"/></a>
+                <a target="blank" href="<?= url_to('scenario#detail', $scenario['sce_code']) ?>"><img width="18em" src="<?= base_url() . "images/see.svg" ?>" alt="Visualiser" title="Visualiser"/></a>
                 <?php if($scenario['cpt_pseudo'] == session()->get('user')['pseudo']): ?>
-                    <a href="#"><img width="18em" src="<?= base_url() . "images/edit.svg" ?>" alt="Modifier"/></a>
-                    <a href="<?= url_to('scenario#supprimer', $scenario['sce_code']) ?>"><img width="18em" src="<?= base_url() . "images/delete.svg" ?>" alt="Supprimer"/></a>
+                    <a href="#"><img width="18em" src="<?= base_url() . "images/edit.svg" ?>" alt="Modifier" title="Modifier"/></a>
+                    <a href="#"><img width="18em" src="<?= base_url() . "images/reset.svg" ?>" alt="Remise à zéro" title="Remise à zéro"/></a>
+                    <a href="<?= url_to('scenario#supprimer', $scenario['sce_code']) ?>"><img width="18em" src="<?= base_url() . "images/delete.svg" ?>" alt="Supprimer" title="Supprimer"/></a>
                 <?php else: ?>
-                    <a href="#"><img width="18em" src="<?= base_url() . "images/copy.svg" ?>" alt="Copier"/></a>
+                    <a href="#"><img width="18em" src="<?= base_url() . "images/copy.svg" ?>" alt="Copier" title="Copier"/></a>
                 <?php endif; ?>
             </td>
         </tr>

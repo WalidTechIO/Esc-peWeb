@@ -182,11 +182,7 @@ class Db_model extends Model {
      */
     public function delete_scenario($id){
         //2e procedure ?
-        $this->db->query("DELETE FROM T_PARTICIPATION_PON WHERE sce_id = $id;");
-        $this->db->query("UPDATE T_SCENARIO_SCE SET eta_id = NULL WHERE sce_id = $id;");
-        $this->db->query("DELETE FROM T_INDICE_IND WHERE eta_id IN (SELECT eta_id FROM T_ETAPE_ETA WHERE sce_id = $id);");
-        $this->db->query("DELETE FROM T_ETAPE_ETA WHERE sce_id = $id;");
-        $this->db->query("DELETE FROM T_SCENARIO_SCE WHERE sce_id = $id;");
+        $this->db->query("CALL suppressionScenario($id)");
     }
 
     /**

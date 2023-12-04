@@ -299,3 +299,27 @@ ordeEtape: BEGIN
 END;
 //
 DELIMITER ;
+
+DROP TRIGGER IF EXISTS scenarioInsert;
+DELIMITER //
+CREATE TRIGGER scenarioInsert
+BEFORE INSERT ON T_SCENARIO_SCE
+FOR EACH ROW
+BEGIN
+    SET NEW.sce_code := CONCAT(UPPER(RIGHT(REPLACE(NEW.sce_intitule, ' ', ''), (8 - CHAR_LENGTH(NEW.sce_id)))), RIGHT(NEW.sce_id, 8));
+END;
+//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS suppressionScenario
+DELIMITER //
+CREATE PROCEDURE suppressionScenario(IN idSce INT)
+BEGIN
+    DELETE FROM T_PARTICIPATION_PON WHERE sce_id = idSce;
+    UPDATE T_SCENARIO_SCE SET eta_id = NULL WHERE sce_id = idSce;
+    DELETE FROM T_INDICE_IND WHERE eta_id IN (SELECT eta_id FROM T_ETAPE_ETA WHERE sce_id = idSce);
+    DELETE FROM T_ETAPE_ETA WHERE sce_id = idSce;
+    DELETE FROM T_SCENARIO_SCE WHERE sce_id = idSce;
+END;
+//
+DELIMITER ;
