@@ -10,14 +10,18 @@ class Compte extends BaseController {
     }
     
     public function creer(){
+        if(!session()->has('user') || session()->get('user')['role'] != "A"){
+            session()->setFlashdata('error', "Vous n'êtes pas connecté ou n'avez pas les droits !");
+            return redirect()->to(url_to("compte#connecter"));
+        }
         $data['title'] = 'Créer un compte';
         if($this->request->getMethod() == "post"){
             if(!$this->validate([
                 'pseudo' => 'required|max_length[255]|min_length[2]',
                 'mdp' => 'required|max_length[255]|min_length[8]',
                 'mdp_conf' => 'required|matches[mdp]',
-                'statut' => 'required|regex_match[/[AO]/]',
-                'role' => 'required|regex_match[/[AD]/]',
+                'statut' => 'required|regex_match[/[AD]/]',
+                'role' => 'required|regex_match[/[AO]/]',
                 'email' => 'required|valid_email',
                 'prenom' => 'required|min_length[2]|alpha_space',
                 'nom' => 'required|min_length[2]|alpha_space'

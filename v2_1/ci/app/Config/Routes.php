@@ -29,6 +29,9 @@ $routes->get('scenario/afficher', [Scenario::class, 'afficher_scenarii'], ['as' 
 $routes->get('scenario/afficher/([a-zA-Z0-9_]{8})', [Scenario::class, 'premiere_etape']);
 $routes->get('scenario/afficher/([a-zA-Z0-9_]{8})/([1-3])', [Scenario::class, 'premiere_etape'], ['as' => 'scenario#premiere_etape']);
 $routes->get('scenario/recapitulatif', [Scenario::class, "recapituler_scenariis"], ['as' => 'scenario#recapitulatif']);
+$routes->get('scenario/details/([a-zA-Z0-9_]{8})', [Scenario::class, 'afficher_scenario'], ['as' => 'scenario#detail']);
+$routes->match(["get", "post"], 'scenario/creer', [Scenario::class, 'creer'], ['as' => 'scenario#creer']);
+$routes->match(["get", "post"], 'scenario/supprimer/([a-zA-Z0-9_]{8})', [Scenario::class, 'supprimer_scenario'], ['as' => 'scenario#supprimer']);
 
 $routes->set404Override(function($message = null) {
     throw new PageNotFoundException("Cette page n'existe pas !");

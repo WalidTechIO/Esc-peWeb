@@ -142,9 +142,42 @@ class Db_model extends Model {
         return $results;
     }
 
+    /**
+     * @return Int Nombre d'etapes active selon l'id d'un scénario
+     */
     public function get_nb_etapes($sceid){
-        //dd("SELECT nbEtapeSce($sceid);");
         return intval($this->db->query("SELECT nbEtapeSce($sceid) AS count;")->getRow()->count);
+    }
+
+    public function get_scenario($code){
+        $scenario = $this->db->query("SELECT * FROM T_SCENARIO_SCE JOIN T_COMPTE_CPT USING(cpt_id) JOIN T_RESSOURCE_RES USING(res_id) WHERE sce_code = '$code';")->getRowArray();
+        if($scenario) $scenario['etapes'] = $this->db->query("SELECT * FROM T_ETAPE_ETA WHERE sce_id = " . $scenario['sce_id'] . ";")->getResultArray();
+        return $scenario;
+    }
+
+    public function create_scenario($intitule, $statut, $uid, $filename){
+        //Creer res -> Recup id res -> Insert scenario | -> Procedure SQL ?
+        $this->db->query("INSERT INTO T_RESSOURCE_RES (res_type, res_chemin) VALUES ('Image', 'images/$filename')");
+        $resid = $this->db->query("SELECT res_id FROM T_RESSOURCE_RES WHERE res_chemin = \"images/$filename\"")->getRowArray()['res_id'];
+        $this->db->query("INSERT INTO T_SCENARIO_SCE (sce_intitule, sce_statut, sce_code, cpt_id, res_id) VALUES (\"$intitule\", \"$statut\", \"tmp\", $uid, $resid);");
+    }
+
+    public function delete_scenario($id){
+        //2e procedure ?
+        $this->db->query("DELETE FROM T_PARTICIPATION_PON WHERE sce_id = $id;");
+        $this->db->query("UPDATE T_SCENARIO_SCE SET eta_id = NULL WHERE sce_id = $id;");
+        $this->db->query("DELETE FROM T_INDICE_IND WHERE eta_id IN (SELECT eta_id FROM T_ETAPE_ETA WHERE sce_id = $id);");
+        $this->db->query("DELETE FROM T_ETAPE_ETA WHERE sce_id = $id;");
+        $this->db->query("DELETE FROM T_SCENARIO_SCE WHERE sce_id = $id;");
+    }
+
+    public function get_code_etape($id){
+        $etape = $this->db->query("SELECT eta_code FROM T_ETAPE_ETA WHERE eta_id = $id;")->getRow();
+        if($etape){
+            return $etape->eta_code;
+        } else {
+            return $etape;
+        }
     }
 
 }
