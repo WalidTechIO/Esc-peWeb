@@ -8,4 +8,4 @@ Adresse e-mail: <?= $user['cpt_mail'] ?>
 <br/>
 Statut: <?= ($user['cpt_role'] == "A") ? "Administrateur" : "Organisateur" ?>
 </p>
-<button><a href="<?= url_to("compte#profil") ?>">Modifier mon profil !</a></button>
+<button><a style="border-bottom: none;" href="<?= url_to("compte#profil") ?>">Modifier mon profil !</a></button>

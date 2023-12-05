@@ -30,8 +30,9 @@
     <input type="password" name="mdp_last" placeholder="•••••••••••••" >
     <?= validation_show_error('mdp_last') ?>
 
-    <div>
+    <div style="display: flex;">
         <input style="margin-top: 2em;" type="submit" value="Confirmer !"/>
+	<a style="border-bottom: none; margin-top: 1.6em; padding: 0;" href="<?= url_to('compte#afficher_profil') ?>"><span class="button">Annuler</span></a>
     </div>
 
 </form>
