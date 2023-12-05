@@ -32,10 +32,10 @@ $routes->get('scenario/recapitulatif', [Scenario::class, "recapituler_scenariis"
 $routes->get('scenario/details/([a-zA-Z0-9_]{8})', [Scenario::class, 'afficher_scenario'], ['as' => 'scenario#detail']);
 $routes->match(["get", "post"], 'scenario/creer', [Scenario::class, 'creer'], ['as' => 'scenario#creer']);
 $routes->match(["get", "post"], 'scenario/supprimer/([a-zA-Z0-9_]{8})', [Scenario::class, 'supprimer_scenario'], ['as' => 'scenario#supprimer']);
-$routes->match(["get", "post"], 'scenario/franchir_etape/([a-zA-Z0-9_]{8})', [Scenario::class, 'franchir_etape']);
-$routes->match(["get", "post"], 'scenario/franchir_etape/([a-zA-Z0-9_]{8})/([1-3])', [Scenario::class, 'franchir_etape'], ['as' => 'scenario#franchir_etape']);
-$routes->match(["get", "post"], 'scenario/valider_reussite/([a-zA-Z0-9_]{8})', [Scenario::class, 'valider_reussite']);
-$routes->match(["get", "post"], 'scenario/valider_reussite/([a-zA-Z0-9_]{8})/([1-3])', [Scenario::class, 'valider_reussite'], ['as' => 'scenario#reussite']);
+$routes->match(["get", "post"], 'scenario/franchir_etape/([a-zA-Z0-9_]{8})', [Scenario::class, 'passer_etape']);
+$routes->match(["get", "post"], 'scenario/franchir_etape/([a-zA-Z0-9_]{8})/([1-3])', [Scenario::class, 'passer_etape'], ['as' => 'scenario#franchir_etape']);
+//$routes->match(["get", "post"], 'scenario/valider_reussite/([a-zA-Z0-9_]{8})/([1-3])', [Scenario::class, 'valider_reussite'], ['as' => 'scenario#reussite']);
+$routes->match(["get", "post"], 'scenario/valider_reussite/([a-zA-Z0-9_]{8})/([1-3])/(:segment)', [Scenario::class, 'validation_reussite'], ['as' => 'scenario#reussite']);
 
 $routes->set404Override(function($message = null) {
     throw new PageNotFoundException("Cette page n'existe pas !");

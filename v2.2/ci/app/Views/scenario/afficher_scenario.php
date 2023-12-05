@@ -13,16 +13,12 @@
 <?php if($scenario['etapes']): ?>
     <table>
         <thead>
-            <th>Intitule</th>
-            <th>Statut</th>
             <th>Question</th>
             <th>Réponse</th>
         </thead>
         <tbody>
             <?php foreach($scenario['etapes'] as $etape): ?>
                 <tr>
-                    <td><?= $etape['eta_intitule'] ?></td>
-                    <td><?= $etape['eta_statut'] == 'P' ? 'Publié' : 'Caché' ?></td>
                     <td><?= $etape['eta_question'] ?></td>
                     <td><?= htmlentities($etape['eta_reponse']) ?></td>
                 </tr>

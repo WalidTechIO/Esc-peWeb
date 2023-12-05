@@ -25,7 +25,7 @@
             <td><?= $compte['cpt_nom'] ?></td>
             <td><?= $compte['cpt_statut'] == 'A' ? "Activé" : "Désactivé" ?></td>
             <td><?= $compte['cpt_role'] == 'A' ? "Administrateur" : "Organisateur" ?></td>
-            <td><a href="#">Modifier</a></td>
+            <td><a style="border-bottom: none;" href="#"><img src="<?= base_url() . "/images/edit.svg" ?>" width="18em"/></a></td>
         </tr>
         <?php endforeach; ?>
     </tbody>

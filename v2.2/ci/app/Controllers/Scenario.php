@@ -43,7 +43,6 @@ class Scenario extends BaseController {
         $controlKey = $this->request->getVar('hide');
         if($reponse == $data['etape']['eta_reponse']){
             session()->setFlashdata('success', "Bonne réponse !");
-            session()->setFlashdata('controlKey', $controlKey);
             return redirect()->to(url_to("scenario#franchir_etape", $data['etape']['prochain_code'], $niveau));
         }
         session()->setFlashdata('error', "Mauvaise réponse. Réessayez !");
@@ -231,6 +230,85 @@ class Scenario extends BaseController {
         } else {
             return redirect()->to('/');
         }
+    }
+
+    public function passer_etape($code, $niveau = 1){
+        $data['etape'] = $this->model->get_etape($code, $niveau);
+        if(!$data['etape']){
+            return redirect()->to('/');
+        }
+        if($data['etape']['eta_prochaine_id'] != null){
+            $data['etape']['prochain_code'] = $this->model->get_code_next_etape($data['etape']['eta_prochaine_id']);
+        } else {
+            $data['etape']['prochain_code'] = null;
+        }
+        $data['action'] = url_to('scenario#franchir_etape', $data['etape']['eta_code'], $niveau);
+        $data['niveau'] = $niveau;
+        if($this->request->getMethod() == "get"){
+            return $this->render('etape/affichage_etape', $data);
+        }
+        if(!$this->validate([
+            'reponse' => 'required',
+            'hide' => 'required'
+        ],[
+            'reponse' => [
+                "required" => "La réponse est requise",
+            ],
+            'hide' => [
+                "required" => "Une erreur est survenue",
+            ]
+        ])){
+            return $this->render('etape/affichage_etape', $data);
+        }
+        $reponse = $this->request->getVar('reponse');
+        $controlKey = $this->request->getVar('hide');
+        if($reponse == $data['etape']['eta_reponse'] && $controlKey == $data['etape']['sce_intitule'].$data['etape']['eta_code'].$niveau){
+            session()->setFlashdata('success', "Bonne réponse !");
+            if($data['etape']['prochain_code']){
+                return redirect()->to(url_to("scenario#franchir_etape", $data['etape']['prochain_code'], $niveau));
+            } else {
+                $premiereEtape = $this->model->get_first_step($data['etape']['sce_code'], $niveau);
+                return redirect()->to(url_to('scenario#reussite', $data['etape']['sce_code'], $niveau, $premiereEtape['sce_code'].$premiereEtape['eta_code'].".".$niveau));
+            }
+        }
+        session()->setFlashdata('error', "Mauvaise réponse. Réessayez !");
+        return $this->render('etape/affichage_etape', $data);
+    }
+
+    public function validation_reussite($code, $niveau, $controlKey){
+        $data['scenario'] = $this->model->get_scenario($code);
+        $data['niveau'] = $niveau;
+        if(!$data['scenario']){
+            return redirect()->to(url_to("scenarii#afficher"));
+        }
+        $premiereEtape = $this->model->get_first_step($code, $niveau);
+        if($controlKey != $premiereEtape['sce_code'].$premiereEtape['eta_code'].".".$niveau){
+            return redirect()->to(url_to('scenario#premiere_etape', $code, $niveau));
+        }
+        $data['controlKey'] = $controlKey;
+        if($this->request->getMethod() == "get"){
+            return $this->render("participation/creer", $data);
+        }
+        if(!$this->validate([
+            "email" => 'required|valid_email',
+            "controlKey" => 'required'
+        ],[
+            'email' => [
+                'required' => 'Vous devez entrez votre adresse e-mail !',
+                'valid_email' => 'Votre adresse e-mail doit être dans un format valide !'
+            ],
+            'controlKey' => [
+                'required' => 'Une erreur est survenue.'
+            ]
+        ])){
+            return $this->render('participation/creer', $data);
+        }
+        if($this->request->getVar('controlKey') == $premiereEtape['sce_code'].$premiereEtape['eta_code'].".".$niveau){
+            $this->model->set_participation($this->request->getVar('email'), $premiereEtape['sce_id'], $niveau);
+            session()->setFlashdata('success', 'Votre participation a bien été enregistré !');
+            return redirect()->to('/');
+        }
+        return redirect()->to(url_to('scenario#premiere_etape', $code, $niveau));
     }
 
 }

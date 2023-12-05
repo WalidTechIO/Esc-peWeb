@@ -28,6 +28,7 @@
                     <a style="border-bottom: none;" href="#"><img width="18em" src="<?= base_url() . "images/edit.svg" ?>" alt="Modifier" title="Modifier"/></a>
                     <a style="border-bottom: none;" href="#"><img width="18em" src="<?= base_url() . "images/reset.svg" ?>" alt="Remise à zéro" title="Remise à zéro"/></a>
                     <a style="border-bottom: none;" href="<?= url_to('scenario#supprimer', $scenario['sce_code']) ?>"><img width="18em" src="<?= base_url() . "images/delete.svg" ?>" alt="Supprimer" title="Supprimer"/></a>
+                    <a style="border-bottom: none;" href="#"><img width="18em" src="<?= base_url() . "images/switch.svg" ?>" alt="Activer/Désactiver" title="Activer/Désactiver"/></a>
                 <?php else: ?>
                     <a style="border-bottom: none;" href="#"><img width="18em" src="<?= base_url() . "images/copy.svg" ?>" alt="Copier" title="Copier"/></a>
                 <?php endif; ?>

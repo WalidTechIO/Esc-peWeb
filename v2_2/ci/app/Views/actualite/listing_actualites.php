@@ -13,7 +13,7 @@
                     <td><?= $actualite['act_titre'] ?></td>
                     <td><?= $actualite['cpt_pseudo'] ?></td>
                     <td><?= $actualite['act_date'] ?></td>
-                    <td><a href="<?= url_to('actualite#afficher', $actualite['act_id']) ?>">Lire</a></td>
+                    <td><a style="border-bottom: none" href="<?= url_to('actualite#afficher', $actualite['act_id']) ?>"><img alt="Lire" title="Lire" src = "<?= base_url() . "images/see.svg" ?>" width="18em"/></a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
