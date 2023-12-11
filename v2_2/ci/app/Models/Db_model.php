@@ -111,7 +111,7 @@ class Db_model extends Model {
      * @return Array Les infos du scénario de sa première étape et de l'indice associé si existant
      */
     public function get_first_step($code, $niveau) {
-        $result = $this->db->query("SELECT * FROM T_SCENARIO_SCE AS sce LEFT JOIN T_ETAPE_ETA AS eta ON eta.sce_id=sce.sce_id AND eta.eta_id=sce.eta_id LEFT JOIN T_INDICE_IND AS ind ON ind.eta_id=eta.eta_id AND ind_niveau=$niveau WHERE sce_code='$code' AND sce_statut='P';")->getRowArray();
+        $result = $this->db->query("SELECT * FROM T_SCENARIO_SCE AS sce LEFT JOIN T_ETAPE_ETA AS eta ON eta.sce_id=sce.sce_id AND eta.eta_id=sce.eta_id LEFT JOIN T_INDICE_IND AS ind ON ind.eta_id=eta.eta_id AND ind_niveau=$niveau LEFT JOIN T_RESSOURCE_RES AS res ON res.res_id=eta.res_id WHERE sce_code='$code' AND sce_statut='P';")->getRowArray();
         return $result;
     }
 
@@ -142,7 +142,7 @@ class Db_model extends Model {
      * @return Array Liste des scenariis publiés
      */
     public function get_scenarii_org($pseudo){
-        $results = $this->db->query("SELECT * FROM T_SCENARIO_SCE JOIN T_COMPTE_CPT USING(cpt_id) LEFT JOIN T_RESSOURCE_RES USING(res_id) ORDER BY (cpt_pseudo = \"$pseudo\") DESC;")->getResultArray();
+        $results = $this->db->query("SELECT * FROM T_SCENARIO_SCE JOIN T_COMPTE_CPT USING(cpt_id) LEFT JOIN T_RESSOURCE_RES USING(res_id) ORDER BY (cpt_pseudo = \"$pseudo\") DESC, cpt_pseudo;")->getResultArray();
         return $results;
     }
 
@@ -204,7 +204,7 @@ class Db_model extends Model {
      * @return Etape l'etape delande avec les infos de son scenario et de son indice 
      */
     public function get_etape($code, $niveau){
-        return $this->db->query("SELECT * FROM T_ETAPE_ETA JOIN T_SCENARIO_SCE USING(sce_id) LEFT JOIN T_INDICE_IND ON ind_niveau = $niveau AND T_ETAPE_ETA.eta_id = T_INDICE_IND.eta_id WHERE eta_code = \"$code\" AND eta_statut = 'P'")->getRowArray();
+        return $this->db->query("SELECT * FROM T_ETAPE_ETA AS eta JOIN T_SCENARIO_SCE USING(sce_id) LEFT JOIN T_RESSOURCE_RES AS res ON res.res_id=eta.res_id LEFT JOIN T_INDICE_IND AS ind ON ind_niveau = $niveau AND eta.eta_id = ind.eta_id WHERE eta_code = \"$code\" AND eta_statut = 'P'")->getRowArray();
     }
 
     /**

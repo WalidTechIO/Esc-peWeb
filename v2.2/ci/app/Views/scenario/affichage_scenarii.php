@@ -1,7 +1,7 @@
 <div class="inner">
     <?= session()->getFlashdata('success') ?>
     <?= session()->getFlashdata('error') ?>
-    <div margin="0.5em;" style="width: 100%; height: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
+    <div margin="0.5em;" style="width: 100%; height: 100%; display: flex; flex-direction: row; flex-wrap: wrap; gap: 4%;">
     <?php if($scenarii): ?>
         <?php foreach($scenarii as $scenario): ?>
             <div style="margin-top: 5vh; width: 22%; display: flex; align-items: center; flex-direction: column; border: 1px white solid; border-radius: 10px;">

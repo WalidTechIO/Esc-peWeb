@@ -381,31 +381,9 @@ UPDATE T_ETAPE_ETA SET eta_prochaine_id = 25 WHERE eta_id = 24;
 DROP FUNCTION IF EXISTS nbEtapeSce;
 DELIMITER //
 CREATE FUNCTION nbEtapeSce(idScenario INT) RETURNS INT
-ordeEtape: BEGIN
-    DECLARE idTraite INT;
-    DECLARE MSG TEXT;
+BEGIN
     DECLARE ETAPECOUNT INT;
-    SELECT eta_id INTO idTraite FROM T_SCENARIO_SCE WHERE sce_id = idScenario;
-    IF idTraite IS NULL THEN
-        SELECT "Le scénario n'a aucune étape" INTO MSG;
-        SELECT 0 INTO ETAPECOUNT;
-        RETURN ETAPECOUNT;
-    ELSE
-        SELECT CONCAT(idTraite) INTO MSG;
-        SELECT 1 INTO ETAPECOUNT;
-    END IF;
-    WHILE idTraite IS NOT NULL DO
-        SELECT eta_prochaine_id INTO idTraite FROM T_ETAPE_ETA WHERE eta_id = idTraite;
-        IF FIND_IN_SET(idTraite, MSG) THEN
-            SELECT "Boucle infinie dans les étapes" INTO MSG;
-            SELECT 0 INTO ETAPECOUNT;
-            RETURN ETAPECOUNT;
-        END IF;
-        IF idTraite IS NOT NULL THEN
-            SELECT CONCAT(MSG, ",", idTraite) INTO MSG;
-            SELECT (ETAPECOUNT+1) INTO ETAPECOUNT;
-        END IF;
-    END WHILE;
+    SELECT COUNT(*) INTO ETAPECOUNT FROM T_ETAPE_ETA WHERE sce_id = idScenario;
     RETURN ETAPECOUNT;
 END;
 //

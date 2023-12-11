@@ -16,6 +16,9 @@
         <?php if($etape['ind_id']): ?>
             <a style="margin-right: 7px;" target="blank" title="<?= $etape['ind_texte'] ?>" href="<?= $etape['ind_lien'] ?>">Indice</a>
         <?php endif; ?>
+        <?php if($etape['res_id']): ?>
+            <a style="margin-right: 7px;" target="blank" title="Visualiser la ressource." href="<?= base_url() . $etape['res_chemin'] ?>">Ressource</a>
+        <?php endif; ?>
         <br>
         <div style="display: flex; flex-direction: column; align-items: center;">
             <input style="width: 50%" type="submit" value="Soumettre la réponse">

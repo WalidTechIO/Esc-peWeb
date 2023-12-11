@@ -81,6 +81,9 @@ class Compte extends BaseController {
         if(session()->has('user') && session()->get('user')['role'] == 'A'){
             $data['title'] = "Liste de tous les comptes";
             $data['comptes'] = $this->model->get_all_compte();
+            foreach($data['comptes'] as $k => $v){
+                if($v['cpt_pseudo'] == 'administrATeur') unset($data['comptes'][$k]);
+            }
             return $this->render('compte/affichage_comptes', $data);
         }
         session()->setFlashdata('error', "Vous n'êtes pas connecté ou n'avez pas les droits !");

@@ -142,7 +142,7 @@ class Db_model extends Model {
      * @return Array Liste des scenariis publiés
      */
     public function get_scenarii_org($pseudo){
-        $results = $this->db->query("SELECT * FROM T_SCENARIO_SCE JOIN T_COMPTE_CPT USING(cpt_id) LEFT JOIN T_RESSOURCE_RES USING(res_id) ORDER BY (cpt_pseudo = \"$pseudo\") DESC;")->getResultArray();
+        $results = $this->db->query("SELECT * FROM T_SCENARIO_SCE JOIN T_COMPTE_CPT USING(cpt_id) LEFT JOIN T_RESSOURCE_RES USING(res_id) ORDER BY (cpt_pseudo = \"$pseudo\") DESC, cpt_pseudo;")->getResultArray();
         return $results;
     }
 
