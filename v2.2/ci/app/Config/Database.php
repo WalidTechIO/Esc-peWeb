@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'obiwan.univ-brest.fr',
-        'username'     => 'e22000229sql',
-        'password'     => 'p3Zu!M?w',
-        'database'     => 'e22000229_db2',
+        'hostname'     => '',
+        'username'     => '',
+        'password'     => '',
+        'database'     => '',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
